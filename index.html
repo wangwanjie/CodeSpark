@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>编程小星球 CodeSpark：家庭 Android TV 亲子编程</title>
+<meta name="description" content="编程小星球是面向家庭 Android TV 的亲子编程应用：用遥控器给机器人点点排指令，36 个任务覆盖顺序、预测、调试、循环、条件、动作包和地图创作，离线使用。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="编程小星球 CodeSpark">
+<meta property="og:description" content="家庭 Android TV 亲子编程：用遥控器排指令，36 个任务，离线使用。">
+<meta property="og:image" content="assets/shots/home.webp">
+<meta name="theme-color" content="#DDF1FF" id="meta-theme">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<script>
+/* 首屏前确定主题与语言，避免闪烁；URL 参数优先于 localStorage */
+(function () {
+  var q = new URLSearchParams(location.search), d = document.documentElement;
+  var t = q.get('theme');
+  try { t = t || localStorage.getItem('cs-theme'); } catch (e) {}
+  if (t !== 'light' && t !== 'dark') { t = 'auto'; }
+  var dark = t === 'dark' || (t === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
+  d.dataset.themePref = t;
+  d.dataset.theme = dark ? 'dark' : 'light';
+  document.getElementById('meta-theme').content = dark ? '#12163A' : '#DDF1FF';
+})();
+</script>
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">跳到正文</a>
+
+<header class="top">
+  <a class="brand" href="./" aria-label="编程小星球 CodeSpark" data-i18n-aria="brandAria">
+    <img src="assets/icon-64.webp" srcset="assets/icon-64.webp 1x, assets/icon-128.webp 2x" width="40" height="40" alt="" decoding="async">
+    <span><b data-i18n="name">编程小星球</b><small data-i18n="sub">CodeSpark</small></span>
+  </a>
+  <nav class="links" aria-label="页面导航" data-i18n-aria="navAria">
+    <a href="#map" data-i18n="navMap">关卡地图</a>
+    <a href="#install" data-i18n="navInstall">下载安装</a>
+    <a href="#parents" data-i18n="navParents">给家长</a>
+  </nav>
+  <div class="tools">
+    <div class="seg" role="group" aria-label="语言" data-i18n-aria="langAria">
+      <button type="button" data-lang="zh">简</button><button type="button" data-lang="tw">繁</button><button type="button" data-lang="en">EN</button>
+    </div>
+    <div class="seg" role="group" aria-label="主题" data-i18n-aria="themeAria">
+      <button type="button" data-theme-btn="light" aria-label="浅色" data-i18n-aria="themeLight"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M7 1h2v2H7zM7 13h2v2H7zM1 7h2v2H1zM13 7h2v2h-2zM5 5h6v6H5zM3 3h1v1H3zM12 3h1v1h-1zM3 12h1v1H3zM12 12h1v1h-1z"/></svg></button><button type="button" data-theme-btn="dark" aria-label="深色" data-i18n-aria="themeDark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2h4v1h2v1h1v2H9v1H8v3h1v1h4v1h-1v1h-2v1H6v-1H4v-1H3v-2H2V6h1V4h1V3h2z"/></svg></button><button type="button" data-theme-btn="auto" aria-label="跟随系统" data-i18n-aria="themeAuto"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 2h14v9H1zm2 2v5h10V4zM5 12h6v1h2v1H3v-1h2z"/></svg></button>
+    </div>
+    <a class="gh" href="https://github.com/wangwanjie/CodeSpark" aria-label="GitHub 仓库" data-i18n-aria="ghAria"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.6 0 0 3.6 0 8c0 3.5 2.3 6.5 5.5 7.6.4.1.5-.2.5-.4v-1.4c-2.2.5-2.7-1-2.7-1-.4-.9-.9-1.2-.9-1.2-.7-.5.1-.5.1-.5.8.1 1.2.8 1.2.8.7 1.2 1.9.9 2.3.7.1-.5.3-.9.5-1.1-1.8-.2-3.6-.9-3.6-4 0-.9.3-1.6.8-2.1-.1-.2-.4-1 .1-2.1 0 0 .7-.2 2.2.8a7.6 7.6 0 0 1 4 0c1.5-1 2.2-.8 2.2-.8.4 1.1.2 1.9.1 2.1.5.6.8 1.3.8 2.1 0 3.1-1.9 3.7-3.6 3.9.3.3.5.8.5 1.5v2.2c0 .2.1.5.6.4A8 8 0 0 0 16 8c0-4.4-3.6-8-8-8z"/></svg></a>
+  </div>
+</header>
+
+<main id="main">
+<section class="hero">
+  <canvas class="sky" id="sky" aria-hidden="true"></canvas>
+  <div class="hero-copy">
+    <p class="kicker" data-i18n="kicker">给家里的 Android TV 装一颗编程星球</p>
+    <h1 data-i18n-html="h1">小小指令，<br>大大冒险。</h1>
+    <p class="lede" data-i18n="lede">孩子拿起遥控器，给机器人点点排好箭头卡，看它一格一格走到目的地。36 个任务从顺序、预测、调试，一路走到循环、条件、动作包和自己设计地图。</p>
+    <div class="cta">
+      <a class="btn btn-go" href="https://github.com/wangwanjie/CodeSpark/releases/latest/download/CodeSpark.apk" data-i18n="ctaDownload">下载 APK</a>
+      <a class="btn" href="#install" data-i18n="ctaHow">怎么装到电视上</a>
+    </div>
+    <p class="facts" data-i18n="facts">1.0.0 版，9.5 MB，Android 6.0 及以上，全程离线</p>
+  </div>
+
+  <div class="console">
+    <div class="tv">
+      <div class="tv-screen" id="demo" tabindex="0" role="application" aria-roledescription="遥控器演示" aria-label="编程演示：用方向键选择卡片，回车确认" data-i18n-aria="demoAria" aria-describedby="demo-msg">
+        <div class="tv-head">
+          <span class="lv" id="lv-label">第 1 关</span>
+          <span class="mode" id="mode-label" data-i18n="modeAuto">自动演示中</span>
+        </div>
+        <div class="board">
+          <div class="grid" id="grid">
+            <div class="robot" id="robot" aria-hidden="true">
+              <svg viewBox="0 0 16 16" shape-rendering="crispEdges"><rect x="7" y="0" width="2" height="2" fill="#E2603F"/><rect x="7.5" y="2" width="1" height="1" fill="#2E5B4A"/><rect x="3" y="3" width="10" height="6" fill="#FBE3A0"/><rect x="4" y="4" width="8" height="4" fill="#2E5B4A"/><rect x="5" y="5" width="2" height="1" fill="#fff"/><rect x="9" y="5" width="2" height="1" fill="#fff"/><rect x="6" y="7" width="4" height="1" fill="#9BE3B4"/><rect x="4" y="9" width="8" height="4" fill="#CFE8A0"/><rect x="2" y="9" width="2" height="3" fill="#E2603F"/><rect x="12" y="9" width="2" height="3" fill="#E2603F"/><rect x="7" y="10" width="2" height="1" fill="#2E5B4A"/><rect x="5" y="13" width="2" height="2" fill="#2E5B4A"/><rect x="9" y="13" width="2" height="2" fill="#2E5B4A"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="prog" aria-label="我的小程序" data-i18n-aria="progAria">
+          <span class="loop" id="loop-badge">×1</span>
+          <ol id="slots"></ol>
+        </div>
+        <div class="pad" id="pad" role="toolbar" aria-label="指令卡" data-i18n-aria="padAria">
+          <button type="button" data-cmd="R" tabindex="-1"><i>→</i><span data-i18n="cR">向右</span></button>
+          <button type="button" data-cmd="D" tabindex="-1"><i>↓</i><span data-i18n="cD">向下</span></button>
+          <button type="button" data-cmd="L" tabindex="-1"><i>←</i><span data-i18n="cL">向左</span></button>
+          <button type="button" data-cmd="U" tabindex="-1"><i>↑</i><span data-i18n="cU">向上</span></button>
+          <button type="button" data-cmd="loop" tabindex="-1"><i>↻</i><span data-i18n="cLoop">重复整段</span></button>
+          <button type="button" data-cmd="del" tabindex="-1"><i>⌫</i><span data-i18n="cDel">删最后</span></button>
+          <button type="button" data-cmd="run" class="run" tabindex="-1"><i>▶</i><span data-i18n="cRun">运行</span></button>
+          <button type="button" data-cmd="reset" tabindex="-1"><i>↺</i><span data-i18n="cReset">清空</span></button>
+        </div>
+        <p class="msg" id="demo-msg" aria-live="polite"></p>
+      </div>
+      <div class="tv-legs" aria-hidden="true"></div>
+    </div>
+    <div class="remote" aria-label="模拟遥控器" data-i18n-aria="remoteAria">
+      <button type="button" class="k k-up" data-key="ArrowUp" aria-label="上" data-i18n-aria="kUp"></button>
+      <button type="button" class="k k-left" data-key="ArrowLeft" aria-label="左" data-i18n-aria="kLeft"></button>
+      <button type="button" class="k k-ok" data-key="Enter" aria-label="确认" data-i18n-aria="kOk">OK</button>
+      <button type="button" class="k k-right" data-key="ArrowRight" aria-label="右" data-i18n-aria="kRight"></button>
+      <button type="button" class="k k-down" data-key="ArrowDown" aria-label="下" data-i18n-aria="kDown"></button>
+      <button type="button" class="k k-back" data-key="Escape" aria-label="返回" data-i18n-aria="kBack">↩</button>
+      <p class="remote-tip" data-i18n="remoteTip">点一下电视画面，再用键盘方向键和回车操作；返回键（Esc）删掉最后一张卡。</p>
+    </div>
+  </div>
+</section>
+
+<section class="flow reveal" aria-labelledby="flow-h">
+  <h2 id="flow-h" data-i18n="flowH">一个任务这样玩</h2>
+  <ol class="steps">
+    <li><b data-i18n="s1h">先想一想</b><span data-i18n="s1">用手指一指路线，或者先猜点点会停在哪一格。</span></li>
+    <li><b data-i18n="s2h">排指令</b><span data-i18n="s2">方向键挑卡片，确认键放进程序，最多六张。</span></li>
+    <li><b data-i18n="s3h">看执行</b><span data-i18n="s3">点点一次走一格，当前卡片和角色同时亮起。</span></li>
+    <li><b data-i18n="s4h">改一改</b><span data-i18n="s4">撞到石头时会指出是第几张卡，改完再试，撤销和恢复原题随时可用。</span></li>
+  </ol>
+</section>
+
+<section class="map reveal" id="map" aria-labelledby="map-h">
+  <div class="sec-head">
+    <h2 id="map-h" data-i18n="mapH">36 个任务，6 颗主题星球</h2>
+    <p data-i18n="mapP">每个任务都有「探索」和「挑战」两套配置，共 72 个。任务可以直接选择、跨级和重玩。点一个关卡看家长参考解，也可以用方向键在关卡之间移动。</p>
+  </div>
+  <div class="planets" id="planets"></div>
+  <div class="detail" id="detail" aria-live="polite"></div>
+  <p class="legend" data-i18n="legend">记号：×2[…] 把整段重复两次；?[❀ | →] 检查当前格有没有花，有就浇花，没有就向右；❀ 浇花；◇ 拿礼物；★ 调用小帮手；A、B 是预测题的选项。</p>
+</section>
+
+<section class="shots reveal" aria-labelledby="shots-h">
+  <div class="sec-head">
+    <h2 id="shots-h" data-i18n="shotsH">电视上的样子</h2>
+    <p data-i18n="shotsP">以下截图来自 1.0.0 在 Android TV 模拟器（1080p）上的验收。</p>
+  </div>
+  <div class="strip" id="strip" tabindex="0" aria-label="应用截图" data-i18n-aria="shotsAria">
+    <figure><img src="assets/shots/home-800.webp" srcset="assets/shots/home-800.webp 800w, assets/shots/home.webp 1600w" sizes="(max-width: 700px) 86vw, 640px" width="800" height="450" loading="lazy" decoding="async" alt="首页：继续探险按钮和每页三个任务" data-i18n-alt="aHome"><figcaption data-i18n="fHome">首页：继续探险，每页三个任务</figcaption></figure>
+    <figure><img src="assets/shots/program-800.webp" srcset="assets/shots/program-800.webp 800w, assets/shots/program.webp 1600w" sizes="(max-width: 700px) 86vw, 640px" width="800" height="450" loading="lazy" decoding="async" alt="编程舞台：左侧地图，右侧程序队列和动作卡" data-i18n-alt="aProgram"><figcaption data-i18n="fProgram">编程舞台：地图、程序队列和动作卡</figcaption></figure>
+    <figure><img src="assets/shots/predict-800.webp" srcset="assets/shots/predict-800.webp 800w, assets/shots/predict.webp 1600w" sizes="(max-width: 700px) 86vw, 640px" width="800" height="450" loading="lazy" decoding="async" alt="预测任务：先读程序，再选择 A 站点或 B 站点" data-i18n-alt="aPredict"><figcaption data-i18n="fPredict">预测：先读程序，再选会停在哪</figcaption></figure>
+    <figure><img src="assets/shots/repeat-800.webp" srcset="assets/shots/repeat-800.webp 800w, assets/shots/repeat.webp 1600w" sizes="(max-width: 700px) 86vw, 640px" width="800" height="450" loading="lazy" decoding="async" alt="重复卡编辑器：选择重复次数和这一段动作" data-i18n-alt="aRepeat"><figcaption data-i18n="fRepeat">重复卡：选次数，放进一整段动作</figcaption></figure>
+    <figure><img src="assets/shots/condition-800.webp" srcset="assets/shots/condition-800.webp 800w, assets/shots/condition.webp 1600w" sizes="(max-width: 700px) 86vw, 640px" width="800" height="450" loading="lazy" decoding="async" alt="条件卡编辑器：分别安排有花时和没有花时的动作" data-i18n-alt="aCondition"><figcaption data-i18n="fCondition">条件卡：有花时、没有花时各做什么</figcaption></figure>
+    <figure><img src="assets/shots/routine-800.webp" srcset="assets/shots/routine-800.webp 800w, assets/shots/routine.webp 1600w" sizes="(max-width: 700px) 86vw, 640px" width="800" height="450" loading="lazy" decoding="async" alt="小帮手编辑器：把一段动作命名为小帮手" data-i18n-alt="aRoutine"><figcaption data-i18n="fRoutine">小帮手：把一段动作打包，反复调用</figcaption></figure>
+    <figure><img src="assets/shots/map-800.webp" srcset="assets/shots/map-800.webp 800w, assets/shots/map.webp 1600w" sizes="(max-width: 700px) 86vw, 640px" width="800" height="450" loading="lazy" decoding="async" alt="地图编辑器：放置起点、终点、石头和小花" data-i18n-alt="aMap"><figcaption data-i18n="fMap">设计地图：放起点、终点、石头和小花</figcaption></figure>
+    <figure><img src="assets/shots/success-800.webp" srcset="assets/shots/success-800.webp 800w, assets/shots/success.webp 1600w" sizes="(max-width: 700px) 86vw, 640px" width="800" height="450" loading="lazy" decoding="async" alt="通关提示：又一朵小花开了，说一说你的想法" data-i18n-alt="aSuccess"><figcaption data-i18n="fSuccess">完成后请孩子说一说自己的办法</figcaption></figure>
+  </div>
+</section>
+
+<section class="who reveal" aria-labelledby="who-h">
+  <h2 id="who-h" data-i18n="whoH">三个档案，各玩各的</h2>
+  <div class="who-grid">
+    <div class="who-c sprout"><h3 data-i18n="p1h">小芽：探索</h3><p data-i18n="p1">建议 5 岁起步。路线更短、选择更少，从图形指令开始。</p></div>
+    <div class="who-c star"><h3 data-i18n="p2h">小星：挑战</h3><p data-i18n="p2">建议 7 岁起步。步数更多，加入障碍和分支情境。</p></div>
+    <div class="who-c duo"><h3 data-i18n="p3h">一起玩</h3><p data-i18n="p3">独立的合作进度，每个任务轮流当规划员和操作员。</p></div>
+  </div>
+  <p class="note" data-i18n="whoNote">年龄只是起点，家长可以按孩子的实际状态选档案。每个档案分别保存进度、程序、小帮手和六张创作地图。</p>
+</section>
+
+<section class="parents reveal" id="parents" aria-labelledby="parents-h">
+  <div class="sec-head">
+    <h2 id="parents-h" data-i18n="parentsH">给家长</h2>
+    <p data-i18n="parentsP">建议每次做两三个小任务：探索档案从 10–15 分钟起步，挑战档案约 15–20 分钟，看孩子状态随时收尾。陪着玩时可以这样问：</p>
+  </div>
+  <ul class="asks">
+    <li data-i18n="q1">运行前：「你猜它会停在哪？」</li>
+    <li data-i18n="q2">出错后：「从哪一张开始不一样？」</li>
+    <li data-i18n="q3">循环任务：「重复的是一张卡，还是一整段？」</li>
+    <li data-i18n="q4">条件任务：「点点是在什么位置检查小花的？」</li>
+    <li data-i18n="q5">小帮手任务：「这个名字代表哪一段动作？」</li>
+    <li data-i18n="q6">创作之后：请孩子介绍地图，再邀请家人来挑战。</li>
+  </ul>
+  <div class="privacy">
+    <h3 data-i18n="privH">隐私与离线</h3>
+    <p data-i18n="priv">安装包没有申请网络权限，课程、语音和图片全部内置。没有账号、广告或统计。进度和作品只保存在这台电视上：覆盖升级会保留，卸载会一并删除。</p>
+    <p data-i18n="limits">本版提供时长建议，暂未加入自动时长限制和家长密码。界面与语音为简体中文。</p>
+  </div>
+</section>
+
+<section class="install reveal" id="install" aria-labelledby="install-h">
+  <div class="sec-head">
+    <h2 id="install-h" data-i18n="installH">下载并装到电视</h2>
+    <p data-i18n="installP">编程小星球没有上架应用商店，通过侧载安装。下载一次 APK，用下面任意一种方式装到电视或电视盒子上。</p>
+  </div>
+  <div class="dl">
+    <a class="btn btn-go big" href="https://github.com/wangwanjie/CodeSpark/releases/latest/download/CodeSpark.apk" data-i18n="dlBtn">下载 CodeSpark.apk</a>
+    <dl class="spec">
+      <dt data-i18n="dtVer">版本</dt><dd>1.0.0 (versionCode 2)</dd>
+      <dt data-i18n="dtSize">大小</dt><dd>9.5 MB</dd>
+      <dt data-i18n="dtSys">系统</dt><dd data-i18n="ddSys">Android 6.0 及以上的 Android TV 或电视盒子，横屏，普通方向键遥控器即可</dd>
+      <dt data-i18n="dtArch">架构</dt><dd>arm64-v8a, armeabi-v7a, x86, x86_64</dd>
+      <dt data-i18n="dtTested">验收</dt><dd data-i18n="ddTested">Android TV API 34 模拟器（1080p）完成完整课程测试；各品牌真机未逐一验证</dd>
+    </dl>
+    <p class="more"><a href="https://github.com/wangwanjie/CodeSpark/releases" data-i18n="allRel">全部版本与更新说明</a></p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="安装方式" data-i18n-aria="tabsAria">
+    <button type="button" role="tab" id="tab-usb" aria-controls="pane-usb" aria-selected="true" data-i18n="tUsb">U 盘</button>
+    <button type="button" role="tab" id="tab-lan" aria-controls="pane-lan" aria-selected="false" tabindex="-1" data-i18n="tLan">局域网传输</button>
+    <button type="button" role="tab" id="tab-adb" aria-controls="pane-adb" aria-selected="false" tabindex="-1" data-i18n="tAdb">adb 命令</button>
+  </div>
+  <div class="pane" role="tabpanel" id="pane-usb" aria-labelledby="tab-usb">
+    <ol>
+      <li data-i18n="u1">在电脑上下载 CodeSpark.apk，复制到 U 盘（FAT32 或 exFAT 格式）。</li>
+      <li data-i18n="u2">把 U 盘插到电视或电视盒子上，用自带的文件管理器找到这个 APK。</li>
+      <li data-i18n-html="u3">第一次安装会提示「未知来源」。按提示进入设置，为这个文件管理器打开「允许安装未知应用」。常见位置：<b>设置 › 设备偏好设置 › 安全性和限制 › 未知来源</b>，各品牌入口名称略有不同。</li>
+      <li data-i18n="u4">回到文件管理器，再次打开 APK，选择安装。完成后在应用列表里找到「编程小星球」。</li>
+    </ol>
+  </div>
+  <div class="pane" role="tabpanel" id="pane-lan" aria-labelledby="tab-lan" hidden>
+    <ol>
+      <li data-i18n="l1">在电视上打开支持局域网接收文件的应用。不少电视的文件管理器或应用市场自带「手机传文件」「局域网传输」功能，打开后会显示一个网址或二维码。</li>
+      <li data-i18n="l2">手机或电脑连同一个 Wi-Fi，打开这个网址，把下载好的 CodeSpark.apk 上传过去。</li>
+      <li data-i18n="l3">在电视上打开收到的 APK 安装。第一次同样需要为该应用允许安装未知应用。</li>
+      <li data-i18n="l4">电视能直接上网时，也可以用下载器类应用输入下载地址，直接在电视上下载安装。</li>
+    </ol>
+    <p class="url"><code>https://github.com/wangwanjie/CodeSpark/releases/latest/download/CodeSpark.apk</code></p>
+  </div>
+  <div class="pane" role="tabpanel" id="pane-adb" aria-labelledby="tab-adb" hidden>
+    <ol>
+      <li data-i18n-html="a1">在电视上打开开发者选项：进入 <b>设置 › 设备偏好设置 › 关于</b>，连续按「版本号」（或「Android TV OS 版本」）七次。</li>
+      <li data-i18n="a2">在开发者选项里打开 USB 调试或网络调试，记下电视的 IP 地址。电脑上需要已经装好 Android SDK Platform Tools。</li>
+      <li data-i18n="a3">电视和电脑在同一网络时执行下面的命令，电视上弹出授权框时选择允许。端口以电视显示为准，Android 11 及以上的无线调试可能要先用 adb pair 配对。</li>
+    </ol>
+<pre><code>adb connect 192.168.1.50:5555
+adb install -r CodeSpark.apk
+adb shell am start -n cn.vanjay.codespark/.MainActivity</code></pre>
+  </div>
+
+  <details class="verify">
+    <summary data-i18n="vSum">校验安装包与升级说明</summary>
+    <p data-i18n="v1">发布版使用正式密钥签名（APK 签名 v1 + v2），证书主体 CN=CodeSpark Family。可以用 apksigner verify --print-certs 核对证书指纹：</p>
+    <p class="hash"><span data-i18n="vCert">证书 SHA-256</span><code>f6bc73494d125b5e4ca0c13a2f9b93e126be339b4ca3c63c69a5f67c565d4fe0</code></p>
+    <p class="hash"><span data-i18n="vApk">1.0.0 APK SHA-256</span><code>76090b55a15ff650334f3d7601d5d278cacbfa9115004d566cfe3dc9fd1524fc</code></p>
+    <p data-i18n="v2">以后的新版本使用同一个密钥签名，直接覆盖安装即可保留进度和作品。安装时出现 INSTALL_FAILED_UPDATE_INCOMPATIBLE，说明设备上装着另一个签名的同包名版本，需要先卸载它（会清除该版本的记录）。</p>
+  </details>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <a class="brand small" href="./"><img src="assets/icon-64.webp" width="28" height="28" alt="" loading="lazy" decoding="async"><b data-i18n="name">编程小星球</b></a>
+    <nav aria-label="页脚链接" data-i18n-aria="footAria">
+      <a href="https://vanjay.cn" data-i18n="more">VanJay 的更多作品</a>
+      <a href="https://github.com/wangwanjie/CodeSpark" data-i18n="repo">GitHub 仓库</a>
+      <a href="https://github.com/wangwanjie/CodeSpark/issues" data-i18n="feedback">反馈问题</a>
+    </nav>
+    <p>© 2026 VanJay</p>
+  </div>
+</footer>
+</body>
+</html>
